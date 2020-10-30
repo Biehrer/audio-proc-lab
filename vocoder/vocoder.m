@@ -42,6 +42,8 @@ else
    n_max = (num_of_samples-1) / 2;
 end
 
+% In the Aufgabenblatt, this is referenced as bin_width:
+% bin_width = Fs / N; 
 f0 = sample_freq_hz / num_of_samples;
 
 % plot fft
@@ -82,3 +84,14 @@ signal_bp_filtered = filter(hp_filter, 1, signal_lp_filtered);
  % Offset method: Check highest / lowest frequency parts and dependent on
  % this, decide if its male or female => high amount of false
  % positives..Just a probabilistic 
+ 
+ 
+ % Idee: FFT in Fenstern durchführen (Evtl noch filtern, damit nur
+ % interessante frequenzanteile enthalten sind)..Dann immer den Mittelwert
+ % der Fenster berechnen(gleitender mittelwert)...Wenn alle Fenster
+ % verarbeitet sind, mithilfe des Mittelwerts, über alle Fenster feststellen,
+ % ob Mann(Tieferer Mittelwert-ca 120Hz) oder Frau(höherer Mittelwert (ca
+ % 240Hz)im signal spricht
+ 
+ % => Vermutlich RObuster, als nur eine einzige FFT durchzuführen(Weniger
+ % FP. FN)
