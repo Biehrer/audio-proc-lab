@@ -65,12 +65,12 @@ title('FFT');
 % Create highpass
 filter_taps=64; % filter order
 % everything below this frequency is cut out of the signal after filtering
-cutof_freq_low_hz=40; 
+cutof_freq_low_hz=80; % male speakers usually have 120Hz 
 hp_filter = fir1(filter_taps, (cutof_freq_low_hz/sample_freq_hz)*2, 'high');
 delay_hp_filt = mean( grpdelay(hp_filter) );
 % Create lowpass
 % everything above this frequency is cut out of the signal after filtering
-cutof_freq_high_hz=20;
+cutof_freq_high_hz=300; % Female speakers have usually 240 Hz
 lp_filter = fir1(filter_taps, (cutof_freq_high_hz/sample_freq_hz)*2, 'low');
 delay_lp_filt = mean(grpdelay(lp_filter));
 % Filter bandpass
