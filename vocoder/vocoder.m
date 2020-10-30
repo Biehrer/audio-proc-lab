@@ -48,8 +48,8 @@ f0 = sample_freq_hz / num_of_samples;
 frequencies = (1:1:n_max) * f0;
 subplot(2,1,2);
 % start plotting at index 2, because the first value is mittelwert
-fft_plot_part = SAMPLES(2:length(frequencies)+1);
-plot(frequencies, fft_plot_part);
+fft_part = SAMPLES(2:length(frequencies)+1);
+plot(frequencies, fft_part);
 title('FFT');
 % only plot data range which is interesting to detect vocal properties
  xlim([ 0 1000]);
@@ -59,11 +59,26 @@ title('FFT');
  % both bandpassed signals and dependent on some threshold, decide if its a
  % male or female
  
- % Possibility 2:
+ %! Do filtering before FFT!
+% Create highpass
+filter_taps=64; % filter order
+% everything below this frequency is cut out of the signal after filtering
+cutof_freq_low_hz=40; 
+hp_filter = fir1(filter_taps, (cutof_freq_low_hz/sample_freq_hz)*2, 'high');
+delay_hp_filt = mean( grpdelay(hp_filter) );
+% Create lowpass
+% everything above this frequency is cut out of the signal after filtering
+cutof_freq_high_hz=20;
+lp_filter = fir1(filter_taps, (cutof_freq_high_hz/sample_freq_hz)*2, 'low');
+delay_lp_filt = mean(grpdelay(lp_filter));
+% Filter bandpass
+signal_lp_filtered = filter(lp_filter, 1, samples);
+signal_bp_filtered = filter(hp_filter, 1, signal_lp_filtered);
+
+% Detect peaks in the fourier transformed sample
+[peaks, locs] = findpeaks(fft_part);
+
+% Possibility 2:
  % Offset method: Check highest / lowest frequency parts and dependent on
  % this, decide if its male or female => high amount of false
  % positives..Just a probabilistic 
-
-%f0 = fs/2;
-%2*f0 = fs;
-%f0 = maximale frequenz des signals
