@@ -29,23 +29,26 @@ plot(timestamps, samples);
 title('audio time series');
 % FFT
 % Because of the matlab specific fft implementation, we have to divide through
-% num_of_samples
+% 'num_of_samples'
+% Power spec
 SAMPLES=abs(fft(samples)/ num_of_samples);
+%Power spec percentage
+pow_spec_percentage=SAMPLES/max(SAMPLES);
+pow_spec_db = 10 * log10(pow_spec_percentage);
 
-f0 = sample_freq_hz/num_of_samples;
-
-if num_of_samples % 2 == 0
-   max_freq = ((num_of_samples-2) / 2)*f0;
+if mod(num_of_samples, 2) == 0
+   n_max = (num_of_samples-2) / 2;
 else
-   max_freq = ((num_of_samples-1) / 2)*f0;  
+   n_max = (num_of_samples-1) / 2;
 end
 
-frequencies = (0:f0:max_freq);
-pseudo_freq = (1:1:num_of_samples);
+f0 = sample_freq_hz / num_of_samples;
+
 % plot fft
+frequencies = (1:1:n_max) * f0;
 subplot(2,1,2);
-% start at index 2, because the first value is mittelwert?
-fft_plot_part = SAMPLES(1:(num_of_samples/2));
+% start plotting at index 2, because the first value is mittelwert
+fft_plot_part = SAMPLES(2:length(frequencies)+1);
 plot(frequencies, fft_plot_part);
 title('FFT');
 % only plot data range which is interesting to detect vocal properties
