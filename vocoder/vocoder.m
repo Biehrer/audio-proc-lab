@@ -95,3 +95,5 @@ signal_bp_filtered = filter(hp_filter, 1, signal_lp_filtered);
  
  % => Vermutlich RObuster, als nur eine einzige FFT durchzuführen(Weniger
  % FP. FN)
+ % Noch bessser => Median benutzen? Ist nicht so empfindlich gegen
+ % ausreißer nach oben oder unten (wie bei 'n' oder 's'
