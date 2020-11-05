@@ -23,7 +23,7 @@ while(true)
    
     num_bytes = serialObject.BytesAvailable;
     
-    if ( num_bytes < input_buff_size_bytes)
+    if ( num_bytes >= input_buff_size_bytes)
         
         soundValues = fread(serialObject, num_bytes, 'double');    
         % y(x) = m * x + b; 
