@@ -47,7 +47,7 @@ while(true)
         % if the new values require a rescale
         max_val_new_samples = max(samples(1:num_new_samples));
         if max_val_new_samples > current_y_max_value
-           current_y_max_value = max(samples); 
+           current_y_max_value = max_val_new_samples; 
         end
         
         min_val_new_samples = min(samples(1:num_new_samples));
